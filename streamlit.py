@@ -1,11 +1,17 @@
 import streamlit as st
 import tensorflow as tf
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import model_from_json
 
 # Load model
 @st.cache(allow_output_mutation=True)
 def load_model():
-    model = tf.keras.models.load_model('model.h5')  # Update model file name
+    # Load JSON model architecture
+    with open('model.json', 'r') as json_file:
+        loaded_model_json = json_file.read()
+    model = model_from_json(loaded_model_json)
+
+    # Load weights into new model
+    model.load_weights("model.h5")  # Update model file name
     return model
 
 # Load the model

@@ -1,7 +1,8 @@
 import streamlit as st
 import tensorflow as tf
+import json
 
-# Load the model
+# Function to load the model
 @st.cache(allow_output_mutation=True)
 def load_model():
     try:
@@ -17,3 +18,36 @@ def load_model():
     except Exception as e:
         st.error(f"Error loading the model: {e}")
         return None
+
+# Main function to run the Streamlit app
+def main():
+    # Title of the app
+    st.title("Hate Speech Detection")
+
+    # Load the model
+    model = load_model()
+
+    if model:
+        # Input text area for user input
+        text_input = st.text_area("Enter text:", "")
+
+        # Button to trigger inference
+        if st.button("Detect Hate Speech"):
+            # Perform inference
+            prediction = predict_hate_speech(model, text_input)
+            st.write("Prediction:", prediction)
+
+# Function to perform inference
+def predict_hate_speech(model, text):
+    # Preprocess the input text (if needed)
+    # Example: tokenization, padding, etc.
+
+    # Perform inference
+    # Example: model.predict(text)
+
+    # Placeholder return value
+    return "Positive"  # Replace with actual prediction
+
+# Run the main function
+if __name__ == "__main__":
+    main()

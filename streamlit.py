@@ -26,8 +26,10 @@ text_input = st.text_area("Enter text:")
 # Button to make predictions
 if st.button("Detect Hate Speech"):
     if text_input:
-        # Preprocess input text and make predictions
-        # (Your preprocessing steps here)
+        # Preprocess input text
+        preprocessed_text = preprocess(text_input)  # Preprocess the input text
+        
+        # Make predictions
         prediction = model.predict(preprocessed_text)
         
         # Display prediction result

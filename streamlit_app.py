@@ -1,56 +1,6 @@
-import nltk
-nltk.download('stopwords')
-import streamlit as st
-import tensorflow as tf
-import nltk
-from nltk.corpus import stopwords
+# Import necessary functions and variables
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout
-from keras.utils import to_categorical
-from keras import backend as K
-import re
-
-def remove_entity(raw_text):
-    entity_regex = r"&[^\s;]+;"
-    text = re.sub(entity_regex, "", raw_text)
-    return text
-
-# Function to load the model
-@st.cache(allow_output_mutation=True)
-def load_model():
-    try:
-        # Load model architecture from JSON file
-        with open("model.json", "r") as json_file:
-            loaded_model_json = json_file.read()
-        model = tf.keras.models.model_from_json(loaded_model_json)
-
-        # Load weights into the new model
-        model.load_weights("model.h5")
-
-        return model
-    except Exception as e:
-        st.error(f"Error loading the model: {e}")
-        return None
-
-# Main function to run the Streamlit app
-def main():
-    # Title of the app
-    st.title("Hate Speech Detection")
-
-    # Load the model
-    model = load_model()
-
-    if model:
-        # Input text area for user input
-        text_input = st.text_area("Enter text:", "")
-
-        # Button to trigger inference
-        if st.button("Detect Hate Speech"):
-            # Perform inference
-            prediction = predict_hate_speech(model, text_input)
-            st.write("Prediction:", prediction)
 
 # Function to preprocess the input text
 def preprocess_text(text):
@@ -65,6 +15,10 @@ def preprocess_text(text):
     text = remove_stopwords(text)
     
     return text
+
+# Define tokenizer and max_length variables
+tokenizer = Tokenizer()
+max_length = 100  # Example value, please replace with your actual max length
 
 # Function to perform inference
 def predict_hate_speech(model, text):
@@ -83,11 +37,24 @@ def predict_hate_speech(model, text):
     
     return predicted_label
 
-# Function to convert prediction to label
-def convert_prediction_to_label(prediction):
-    # Your code to convert prediction to label goes here
-    # For example, if prediction is an array of probabilities, you can use argmax to get the label
-    return "Positive"  # Replace this with your actual conversion logic
+# Ensure correct order of function definitions
+# Main function to run the Streamlit app
+def main():
+    # Title of the app
+    st.title("Hate Speech Detection")
+
+    # Load the model
+    model = load_model()
+
+    if model:
+        # Input text area for user input
+        text_input = st.text_area("Enter text:", "")
+
+        # Button to trigger inference
+        if st.button("Detect Hate Speech"):
+            # Perform inference
+            prediction = predict_hate_speech(model, text_input)
+            st.write("Prediction:", prediction)
 
 # Run the main function
 if __name__ == "__main__":

@@ -1,0 +1,13 @@
+import pickle
+from tensorflow.keras.preprocessing.text import Tokenizer
+
+# Example text data (replace this with your actual text data)
+texts = ["Sample text 1", "Sample text 2", "Sample text 3"]
+
+# Tokenize the text data
+tokenizer = Tokenizer()
+tokenizer.fit_on_texts(texts)
+
+# Save the tokenizer to a pickle file
+with open("tokenizer.pickle", "wb") as handle:
+    pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)

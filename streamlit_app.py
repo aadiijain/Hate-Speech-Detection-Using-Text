@@ -39,14 +39,27 @@ def main():
 
 # Function to perform inference
 def predict_hate_speech(model, text):
-    # Preprocess the input text (if needed)
-    # Example: tokenization, padding, etc.
+    try:
+        # Assuming preprocessing is needed, perform it here
+        # Example: tokenization, padding, etc.
+        # Example: Convert text to the appropriate format expected by the model
 
-    # Perform inference
-    # Example: model.predict(text)
+        # Perform inference
+        # Example: model.predict(text)
+        # Assuming text is a single input, use [text] as input to the model
+        prediction = model.predict([text])
 
-    # Placeholder return value
-    return "Positive"  # Replace with actual prediction
+        # Assuming your model outputs probabilities or logits,
+        # you can decide a threshold to classify as positive or negative
+        threshold = 0.5
+        if prediction >= threshold:
+            return "Positive"
+        else:
+            return "Negative"
+
+    except Exception as e:
+        st.error(f"Error during prediction: {e}")
+        return "Error"  # Return an error message or handle the exception as needed
 
 # Run the main function
 if __name__ == "__main__":

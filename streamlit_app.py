@@ -1,45 +1,36 @@
 import streamlit as st
 import tensorflow as tf
-from tensorflow.keras.models import model_from_json
-
-# Define preprocessing function
-def preprocess(text):
-    # Perform basic preprocessing steps here
-    preprocessed_text = text.lower()  # Convert text to lowercase
-    # Add more preprocessing steps as needed
-    return preprocessed_text
-
-# Load model
-@st.cache(allow_output_mutation=True)
-def load_model():
-    # Load JSON model architecture
-    with open('model.json', 'r') as json_file:
-        loaded_model_json = json_file.read()
-    model = model_from_json(loaded_model_json)
-
-    # Load weights into new model
-    model.load_weights("model.h5")  # Update model file name
-    return model
 
 # Load the model
-model = load_model()
+@st.cache(allow_output_mutation=True)
+def load_model():
+    model = tf.keras.models.load_model('model.h5')  # Update model file name if needed
+    return model
 
-# Streamlit UI
-st.title("Hate Speech Detection")
+# Preprocessing function
+def preprocess(text):
+    preprocessed_text = text.lower()  # Convert text to lowercase
+    return preprocessed_text
 
-# Text input area
-text_input = st.text_area("Enter text:")
+# Main function to run the Streamlit app
+def main():
+    # Load the model
+    model = load_model()
 
-# Button to make predictions
-if st.button("Detect Hate Speech"):
-    if text_input:
-        # Preprocess input text
-        preprocessed_text = preprocess(text_input)  # Preprocess the input text
-        
-        # Make predictions
-        prediction = model.predict(preprocessed_text)
-        
-        # Display prediction result
-        st.write("Prediction:", prediction)
-    else:
-        st.warning("Please enter some text.")
+    # Title of the app
+    st.title("Hate Speech Detection")
+
+    # Input text box
+    text_input = st.text_input("Enter text:")
+
+    # Preprocess the input text
+    preprocessed_text = preprocess(text_input)
+
+    # Predict
+    if st.button("Predict"):
+        prediction = model.predict(preprocessed_text)  # Update this part based on your model input format
+        st.write("Prediction:", prediction)  # Display the prediction result
+
+# Run the app
+if __name__ == "__main__":
+    main()

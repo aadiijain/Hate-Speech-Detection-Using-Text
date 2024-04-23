@@ -37,17 +37,22 @@ def main():
             prediction = predict_hate_speech(model, text_input)
             st.write("Prediction:", prediction)
 
+import numpy as np
+
 # Function to perform inference
 def predict_hate_speech(model, text):
     try:
-        # Assuming preprocessing is needed, perform it here
-        # Example: tokenization, padding, etc.
-        # Example: Convert text to the appropriate format expected by the model
+        # Preprocess the input text
+        # Example: Tokenization and padding
+        tokenizer = ...  # Initialize tokenizer based on your preprocessing method
+        max_sequence_length = ...  # Set the maximum sequence length based on your model
+
+        # Tokenize the text and pad sequences
+        sequences = tokenizer.texts_to_sequences([text])
+        padded_sequences = tf.keras.preprocessing.sequence.pad_sequences(sequences, maxlen=max_sequence_length)
 
         # Perform inference
-        # Example: model.predict(text)
-        # Assuming text is a single input, use [text] as input to the model
-        prediction = model.predict([text])
+        prediction = model.predict(padded_sequences)
 
         # Assuming your model outputs probabilities or logits,
         # you can decide a threshold to classify as positive or negative

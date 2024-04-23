@@ -2,6 +2,13 @@ import streamlit as st
 import tensorflow as tf
 from tensorflow.keras.models import model_from_json
 
+# Define preprocessing function
+def preprocess(text):
+    # Perform basic preprocessing steps here
+    preprocessed_text = text.lower()  # Convert text to lowercase
+    # Add more preprocessing steps as needed
+    return preprocessed_text
+
 # Load model
 @st.cache(allow_output_mutation=True)
 def load_model():

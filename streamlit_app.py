@@ -1,6 +1,13 @@
 import streamlit as st
 import tensorflow as tf
-import json
+import nltk
+from nltk.corpus import stopwords
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout
+from keras.utils import to_categorical
+from keras import backend as K
 
 # Function to load the model
 @st.cache(allow_output_mutation=True)
@@ -37,35 +44,42 @@ def main():
             prediction = predict_hate_speech(model, text_input)
             st.write("Prediction:", prediction)
 
-# Function to perform inference
-import numpy as np
+# Function to preprocess the input text
+def preprocess_text(text):
+    stop_words = set(stopwords.words('english'))
+    stop_words.add("rt")
+    
+    # Preprocessing steps
+    text = text.lower()
+    text = remove_entity(text)
+    text = remove_url(text)
+    text = remove_noise_symbols(text)
+    text = remove_stopwords(text)
+    
+    return text
 
 # Function to perform inference
 def predict_hate_speech(model, text):
-    try:
-        # Preprocess the input text
-        # Example: Tokenization and padding
-        tokenizer = YourTokenizerClass()  # Initialize tokenizer based on your preprocessing method
-        max_sequence_length = YourMaxLengthValue  # Set the maximum sequence length based on your model
+    # Preprocess the input text
+    preprocessed_text = preprocess_text(text)
+    
+    # Tokenize and pad the preprocessed text
+    sequence = tokenizer.texts_to_sequences([preprocessed_text])
+    padded_sequence = pad_sequences(sequence, maxlen=max_length)
 
-        # Tokenize the text and pad sequences
-        sequences = tokenizer.texts_to_sequences([text])
-        padded_sequences = tf.keras.preprocessing.sequence.pad_sequences(sequences, maxlen=max_sequence_length)
+    # Perform inference
+    prediction = model.predict(padded_sequence)
+    
+    # Convert prediction to label
+    predicted_label = convert_prediction_to_label(prediction)
+    
+    return predicted_label
 
-        # Perform inference
-        prediction = model.predict(padded_sequences)
-
-        # Assuming your model outputs probabilities or logits,
-        # you can decide a threshold to classify as positive or negative
-        threshold = 0.5
-        if prediction >= threshold:
-            return "Positive"
-        else:
-            return "Negative"
-
-    except Exception as e:
-        st.error(f"Error during prediction: {e}")
-        return "Error"  # Return an error message or handle the exception as needed
+# Function to convert prediction to label
+def convert_prediction_to_label(prediction):
+    # Your code to convert prediction to label goes here
+    # For example, if prediction is an array of probabilities, you can use argmax to get the label
+    return "Positive"  # Replace this with your actual conversion logic
 
 # Run the main function
 if __name__ == "__main__":

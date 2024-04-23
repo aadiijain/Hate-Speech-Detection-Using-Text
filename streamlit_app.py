@@ -10,6 +10,12 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout
 from keras.utils import to_categorical
 from keras import backend as K
+import re
+
+def remove_entity(raw_text):
+    entity_regex = r"&[^\s;]+;"
+    text = re.sub(entity_regex, "", raw_text)
+    return text
 
 # Function to load the model
 @st.cache(allow_output_mutation=True)

@@ -35,14 +35,17 @@ def main():
     # Predict
     if st.button("Predict"):
         try:
-            # Format input data and make prediction
-            # Example: Convert text to numerical features using tokenizer
-            # prediction = model.predict(preprocessed_text)
-            # Display prediction result
-            # st.write("Prediction:", prediction)
+            if model is not None:
+                # Format input data and make prediction
+                # Example: Convert text to numerical features using tokenizer
+                # prediction = model.predict(preprocessed_text)
+                # Display prediction result
+                # st.write("Prediction:", prediction)
 
-            # Placeholder code for demonstration
-            st.write("Placeholder: Prediction result")
+                # Placeholder code for demonstration
+                st.write("Placeholder: Prediction result")
+            else:
+                st.error("Failed to load the model. Please check the model file.")
         except Exception as e:
             st.error(f"Error: {e}")
 
